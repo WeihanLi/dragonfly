@@ -1698,7 +1698,6 @@ async def test_network_disconnect_small_buffer(df_local_factory, df_seeder_facto
     assert master.is_in_logs("Partial sync requested from stale LSN")
 
 
-# @pytest.mark.slow
 @pytest.mark.asyncio
 async def test_client_pause_with_replica(df_local_factory, df_seeder_factory):
     master = df_local_factory.create(proactor_threads=4)
@@ -1713,7 +1712,7 @@ async def test_client_pause_with_replica(df_local_factory, df_seeder_factory):
     await c_replica.execute_command(f"REPLICAOF localhost {master.port}")
     await wait_available_async(c_replica)
 
-    fill_task = asyncio.create_task(seeder.run(target_ops=3000))
+    fill_task = asyncio.create_task(seeder.run())
 
     # Give the seeder a bit of time.
     await asyncio.sleep(1)
