@@ -407,6 +407,8 @@ void DflyCmd::TakeOver(CmdArgList args, ConnectionContext* cntx) {
 
   LOG(INFO) << "Takeover initiated, locking down the database.";
 
+  // TODO: a bug waiting to happen when the state is not active.
+  // We should check the return value.
   sf_->service().SwitchState(GlobalState::ACTIVE, GlobalState::TAKEN_OVER);
 
   absl::Duration timeout_dur = absl::Seconds(timeout);

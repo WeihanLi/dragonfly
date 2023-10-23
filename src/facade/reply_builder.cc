@@ -264,6 +264,8 @@ void RedisReplyBuilder::SendProtocolError(std::string_view str) {
 }
 
 void RedisReplyBuilder::SendSimpleString(std::string_view str) {
+  DVLOG(1) << "SendSimpleString: " << str;
+
   iovec v[3] = {IoVec(kSimplePref), IoVec(str), IoVec(kCRLF)};
 
   Send(v, ABSL_ARRAYSIZE(v));

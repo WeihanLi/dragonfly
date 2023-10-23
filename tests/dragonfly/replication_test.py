@@ -409,7 +409,7 @@ async def test_rotating_masters(
 @pytest.mark.asyncio
 @pytest.mark.slow
 async def test_cancel_replication_immediately(
-    df_local_factory, df_seeder_factory: DflySeederFactory
+    df_local_factory: DflyInstanceFactory, df_seeder_factory: DflySeederFactory
 ):
     """
     Issue 100 replication commands. This checks that the replication state
@@ -424,9 +424,10 @@ async def test_cancel_replication_immediately(
     master = df_local_factory.create()
     df_local_factory.start_all([replica, master])
 
+    logging.info("replica is on port %d", replica.port)
+
     seeder = df_seeder_factory.create(port=master.port)
     c_replica = aioredis.Redis(port=replica.port, socket_timeout=20)
-
     await seeder.run(target_deviation=0.1)
 
     replication_commands = []
